@@ -1,0 +1,606 @@
+swagger: "2.0"
+info:
+  description: "About Api Batara Microservice"
+  version: "1.0.0"
+  title: "Batara Microservice"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    email: "you@your-company.com"
+host: "virtserver.swaggerhub.com"
+
+schemes:
+  - "http"
+
+tags:
+  - name: "Batara"
+    description: "Every request and response about Batara"
+
+securityDefinitions:  
+   Bearer:    
+     type: apiKey    
+     name: Authorization    
+     in: header
+
+paths:
+  /login:
+    post:
+      summary: "Login"
+      description: "Login endpoint"
+      tags:
+        - "User"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: body
+          name: "body"
+          description: "Login body"
+          required: true
+          schema:
+            $ref: "#/definitions/UserLogin"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "success login"
+              data:
+                type: object
+                $ref: "#/definitions/InfoToken"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+  /user:
+    post:
+      summary: "Create User"
+      description: "Create User"
+      tags:
+        - "User"
+      security:
+        - Bearer: []
+      consumes:
+        - "application/json"
+      parameters:
+        - in: body
+          name: "body"
+          description: "Params Create User body"
+          required: true
+          schema:
+            $ref: "#/definitions/ReqCreateUser"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "success create user"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+    
+    get:
+      summary: "Get all data user"
+      description: "Get all data user"
+      tags:
+        - "User"
+      security:
+        - Bearer: []
+      consumes: 
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          required: true
+        - in: query
+          name: limit
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "Success get data user"
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/ResUser"
+              metadata:
+                type: object
+                $ref: "#/definitions/Metadata"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+  /user/{id}:
+    put:
+      summary: "Update User"
+      description: "Update User"
+      tags:
+        - "User"
+      security:
+        - Bearer: []
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "path"
+          required: true
+          name: "id"
+          type: integer
+        - in: body
+          name: "body"
+          description: "Params Update User body"
+          required: true
+          schema:
+            $ref: "#/definitions/ReqCreateUser"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+
+    delete:
+      summary: "Delete User"
+      description: "Delete User"
+      tags:
+        - User
+      security:
+        - Bearer: []
+      consumes:
+        - "application/json"
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Id User
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "success delete user"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+
+  /gift:
+    post:
+      summary: "Create Gift"
+      description: "Create Gift"
+      tags:
+        - "Gift"
+      security:
+        - Bearer: []
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - in: formData
+          name: photo_product
+          type: file
+          required: true
+        - in: formData
+          name: nama_product
+          type: string
+          required: true
+        - in: formData
+          name: point
+          type: integer
+          required: true
+        - in: formData
+          name: stock
+          type: integer
+          required: true
+        - in: formData
+          name: description
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "success create gift"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"      
+    get:
+      summary: "Get All Data Gifts"
+      tags:
+        - "Gift"
+      security:
+        - Bearer: []
+      consumes: 
+        - "application/json"
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          required: true
+        - in: query
+          name: limit
+          type: integer
+          required: true
+        - in: query
+          name: sorting
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "Success get data gift"
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/ResGift"
+              metadata:
+                type: object
+                $ref: "#/definitions/Metadata"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+  /gift/{id}:
+    put:
+      summary: "Update Gift By Id"
+      description: "Update Gift By Id"
+      tags:
+        - "Gift"
+      security:
+        - Bearer: []
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Id Gift
+        - in: formData
+          name: photo_product
+          type: file
+          required: false
+        - in: formData
+          name: nama_product
+          type: string
+          required: true
+        - in: formData
+          name: point
+          type: integer
+          required: true
+        - in: formData
+          name: stock
+          type: integer
+          required: true
+        - in: formData
+          name: description
+          type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+    delete:
+      summary: "Delete Gift By Id"
+      description: "Delete Gift By Id"
+      tags:
+        - Gift
+      security:
+        - Bearer: []
+      consumes:
+        - "application/json"
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Id Gift
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "success delete gift by id"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+    get:
+      summary: "Get Data By Id Gift"
+      tags:
+        - "Gift"
+      security:
+        - Bearer: []
+      consumes: 
+        - "application/json"
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Id Gift
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              message:
+                type: "string"
+                description: "Success get data gift by id"
+              data:
+                type: object
+                $ref: "#/definitions/ResGift"
+        "400":
+          $ref: "#/responses/BadRequest"
+        "401":
+          $ref: "#/responses/Unauthorized"
+        "404":
+          $ref: "#/responses/NotFound"
+        "500":
+          $ref: "#/responses/InternalServerError"
+
+definitions:
+  ReqCreateUser:
+    type: object
+    properties: 
+      username:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+
+  UserLogin:
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+        example: "0889504178114"
+      password:
+        type: string
+        example: "123456"
+  InfoToken:
+    type: object
+    properties: 
+      token:
+        type: string
+      id:
+        type: number
+        format: float64
+      username:
+        type: string
+      role:
+        type: string
+      expire_date:
+        type: string
+  ResUser:
+    type: object
+    properties: 
+      id:
+        type: integer
+      username:
+        type: string
+      role:
+        type: string
+  ResGift:
+    type: object
+    properties: 
+      id:
+        type: integer
+      photo_product:
+        type: string
+      nama_product:
+        type: string
+      point:
+        type: integer
+      stock:
+        type: integer
+      description:
+        type: string
+      rating:
+        type: number
+        format: float
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+        example: "error"
+  Metadata:
+    type: "object"
+    properties:
+      page:
+        type: integer
+        example: 1
+      per_page:
+        type: integer
+        example: 50
+      total_row:
+        type: integer
+        example: 200
+      total_page:
+        type: integer
+        example: 4
+  
+  #  Models Db
+  User:
+    type: object
+    properties: 
+      id:
+        type: integer
+        format: int64
+        x-go-custom-tag: gorm:"type:int primary key auto_increment"
+      username:
+        type: string
+        x-go-custom-tag: gorm:"type:varchar(225) not null"  
+      password:
+        type: string
+        x-go-custom-tag: gorm:"type:varchar(225) not null"
+      role:
+        type: string
+        enum:
+          - admin
+          - user
+        x-go-custom-tag: gorm:"type:varchar(225) not null"
+      createdAt:
+        type: string
+        format: date-time
+        x-go-custom-tag: gorm:"type:string;autoCreateTime"
+      updatedAt:
+        type: string
+        format: date-time
+        x-go-custom-tag: gorm:"type:string"
+
+  Gift:
+    type: object
+    properties: 
+      id:
+        type: integer
+        format: int64
+        x-go-custom-tag: gorm:"type:int primary key auto_increment"
+      photoProduct:
+        type: string
+        x-go-custom-tag: gorm:"type:varchar(225) not null"  
+      namaProduct:
+        type: string
+        x-go-custom-tag: gorm:"type:varchar(225) not null"
+      stock:
+        type: integer
+        format: int64
+        x-go-custom-tag: gorm:"type:int not null"
+      point:
+        type: integer
+        format: int64
+        x-go-custom-tag: gorm:"type:int not null"
+      rating:
+        type: number
+        format: float
+        default: 0
+        x-go-custom-tag: gorm:"type:float not null"
+      description:
+        type: string
+        x-go-custom-tag: gorm:"type:longtext not null"     
+      createdAt:
+        type: string
+        format: date-time
+        x-go-custom-tag: gorm:"type:string;autoCreateTime"
+      updatedAt:
+        type: string
+        format: date-time
+        x-go-custom-tag: gorm:"type:string"   
+
+responses:
+  NotFound:
+    description: Not Found
+    schema:
+      $ref: "#/definitions/Error"
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: "#/definitions/Error"
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: "#/definitions/Error"
+  InternalServerError:
+    description: Internal server error
+    schema:
+      $ref: "#/definitions/Error"

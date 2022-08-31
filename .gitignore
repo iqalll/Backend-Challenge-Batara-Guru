@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+*.env
 
 # Test binary, built with `go test -c`
 *.test
@@ -12,4 +13,16 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+# operation/
+api/doc.go
+api/embedded_spec.go
+api/server.go
+api/operations/*
+#models/
+models/gift.go
+models/info_token.go
+models/user.go
+models/req_create_user.go
+models/res_gift.go
+models/res_user.go
+models/user_login.go
